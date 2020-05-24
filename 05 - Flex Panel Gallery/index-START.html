@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flex Panels 💪</title>
+  <link href='https://fonts.googleapis.com/css?family=Amatic+SC' rel='stylesheet' type='text/css'>
+</head>
+<body>
+  <style>
+    html {
+      box-sizing: border-box;
+      background: #ffc600;
+      font-family: 'helvetica neue';
+      font-size: 20px;
+      font-weight: 200;
+    }
+    
+    body {
+      margin: 0;
+    }
+    
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
+
+    .panels {
+      min-height: 100vh;
+      overflow: hidden;
+
+/* 加入 display: flex 屬性，讓版面可以左至右排序 */
+      display: flex;
+    }
+
+    .panel {
+      background: #6B0F9C;
+      box-shadow: inset 0 0 0 5px rgba(255,255,255,0.1);
+      color: white;
+      text-align: center;
+      align-items: center;
+      /* Safari transitionend event.propertyName === flex */
+      /* Chrome + FF transitionend event.propertyName === flex-grow */
+      transition:
+        font-size 0.7s cubic-bezier(0.61,-0.19, 0.7,-0.11),
+        flex 0.7s cubic-bezier(0.61,-0.19, 0.7,-0.11),
+        background 0.2s;
+      font-size: 20px;
+      background-size: cover;
+      background-position: center;
+
+/* 加入 display: flex; flex:1; 等屬性， */
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
+    .panel2 { background-image:url(https://source.unsplash.com/rFKUFzjPYiQ/1500x1500); }
+    .panel3 { background-image:url(https://images.unsplash.com/photo-1465188162913-8fb5709d6d57?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&w=1500&h=1500&fit=crop&s=967e8a713a4e395260793fc8c802901d); }
+    .panel4 { background-image:url(https://source.unsplash.com/ITjiVXcwVng/1500x1500); }
+    .panel5 { background-image:url(https://source.unsplash.com/3MNzGlQM7qs/1500x1500); }
+
+    /* Flex Children */
+    .panel > * {
+      margin: 0;
+      width: 100%;
+      transition: transform 0.5s;
+/* 加入 CSS */
+      display: flex;
+      flex: 1;
+      justify-content: center; /* 水平置中 */
+      align-items: center;  /* 垂直置中 */
+    }
+
+    .panel p {
+      text-transform: uppercase;
+      font-family: 'Amatic SC', cursive;
+      text-shadow: 0 0 4px rgba(0, 0, 0, 0.72), 0 0 14px rgba(0, 0, 0, 0.45);
+      font-size: 2em;
+    }
+
+/* 新增CSS */
+.panel p:first-child {
+      font-size: 4em;
+/* 加入 translate 移動元素 */
+      transform: translateY(-100%)
+    }
+
+    .panel p:nth-child(2) {
+      font-size: 4em;
+    }
+/* 新增CSS */
+    .panel p:last-child {
+      font-size: 4em;
+/* 加入 translate 移動元素 */
+      transform: translateY(100%)
+    }
+
+    .panel.open {
+      flex: 5;
+      font-size: 40px;
+    }
+
+  </style>
+
+  <div class="panels">
+    <div class="panel panel1">
+      <p>Hey</p>
+      <p>Let's</p>
+      <p>Dance</p>
+    </div>
+    <div class="panel panel2">
+      <p>Give</p>
+      <p>Take</p>
+      <p>Receive</p>
+    </div>
+    <div class="panel panel3">
+      <p>Experience</p>
+      <p>It</p>
+      <p>Today</p>
+    </div>
+    <div class="panel panel4">
+      <p>Give</p>
+      <p>All</p>
+      <p>You can</p>
+    </div>
+    <div class="panel panel5">
+      <p>Life</p>
+      <p>In</p>
+      <p>Motion</p>
+    </div>
+  </div>
+
+<script>
+let lastPanel = null
+
+function clickHandler(e) {
+
+  let currentPanel = e.target //  e.target就是該次事件當中被點選到的 dom 元素，因為有可能 target 會是裡面的 p 元素，所以要過濾掉
+  let i = 0 // 使用一個變數幫助紀錄目前迭代到哪個元素，預設從索引 0 開始
+
+
+  while (!currentPanel.classList.contains('panel')) { // 若找不到有 panel 這個 class 的元素，就執行以下內容，直到找到該元素為止
+    i++ // 把索引值+1
+    currentPanel = e.path[i] //  e.path為一個紀錄該次點擊事件當中事件傳遞所有經過元素的陣列 （從 target一直上升到最外層元素 window）
+  }
+
+  if (currentPanel === lastPanel) {
+    currentPanel.classList.remove('open')
+    lastPanel = null
+    return
+  } 
+
+  if (lastPanel) {
+    lastPanel.classList.remove('open')
+  } 
+  currentPanel.classList.add('open')
+  lastPanel = currentPanel
+
+}
+
+// 用事件委派的方式，減少監聽器的數量
+document.querySelector('.panels').addEventListener('click', clickHandler)
+</script>
+
+
+
+</body>
+</html>

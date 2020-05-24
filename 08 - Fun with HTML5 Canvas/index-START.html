@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+<script>
+  // 監聽點擊(mousedown)、滑鼠移動軌跡(mousemove)、放開滑鼠(mouseup)
+  const canvas = document.querySelector('canvas')
+  let draw = false
+  const ctx = canvas.getContext('2d') // 設定畫筆，使用 getContext 方法
+  let deg = 0
+
+  let wid = 20 
+  let direction = -1
+
+  ctx.strokeStyle = `hsl(${deg}, 100%, 75%)` // 設定筆刷顏色（使用HSL網頁色彩碼）
+  ctx.lineWidth = `${wid}` // 設定筆刷大小（單位px）
+  ctx.lineCap = 'round' // 設定線條形狀
+  ctx.lineJoin = 'round' // 設定轉折形狀
+
+  let x, y
+
+  canvas.addEventListener('mousedown',function(e){
+    console.log('mousedown')
+    // 定位目前位置(x,y)
+    x = e.offsetX
+    y = e.offsetY
+    draw = true
+    })
+
+  canvas.addEventListener('mousemove',function(e){
+    if (draw) {
+      console.log(e)
+      ctx.beginPath()
+      ctx.moveTo(x, y) // 動作前的起始點位置
+      ctx.lineTo(e.offsetX, e.offsetY) // 動作後的位置
+      // 隨動作定位目前位置(x,y)
+      x = e.offsetX
+      y = e.offsetY
+      ctx.stroke()
+      
+      // 設定角度變化
+      // 第一種方法
+      // deg = deg > 360 ? 0 : ++deg
+      deg++ // 角度大於360會自動重新計算
+      ctx.strokeStyle = `hsl(${deg}, 100%, 75%)`
+
+      // 小於 0 大於 20，會改變寬度的加減
+      if ( wid < 0 || wid > 20) {
+        direction = direction * -1
+      } 
+        wid = wid + direction
+        ctx.lineWidth = `${wid}`
+      }
+    })
+
+  canvas.addEventListener('mouseup',function(){
+    console.log('mouseup')
+    draw = false
+    })
+</script>
+
+<style>
+  html, body {
+    margin: 0;
+  }
+</style>
+
+</body>
+</html>

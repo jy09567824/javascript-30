@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+  <!-- 用 input 內輸入的資料與 data 做比對，並顯示在 <li> 中 -->
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script> -->
+<script>
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+let data = []
+
+// 使用 fetch 取得資料
+fetch('https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json')
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(myJson) {
+    data = myJson
+    console.log(data);
+    
+    // 監聽 input 內的輸入值，並執行 changeHandler 函式
+    document.querySelector('input').addEventListener('input', changeHandler)
+
+    function changeHandler(e) {
+      // 取得搜尋框輸入的值
+      console.log(e.target.value)
+      const value = e.target.value
+      // 補充額外判斷邏輯，如果為空值，不做任何篩選動作（不然事件會一直監聽，印出所有值）
+      if (!value) {
+        document.querySelector('.suggestions').innerHTML = ''
+        return
+      }
+      // 新增正規表達式的test方法，先取得輸入值，'g'為完全符合，找出與輸入值完全吻合的項目
+      const reg = new RegExp(value, 'g') // RegExp(n,m) n為至少、m為至多，其n、m皆為正整數
+      // 將輸入之值與取得之資料比對，使用 filter 方法執行 test，為 true 的值
+      const result = data.filter(el => {
+        return reg.test(el.city) || reg.test(el.state)
+      })
+
+      // 將篩選出之結果新增成 <li> ${city}, ${state} </li>
+      // 用 map 方法將資料提取，並儲存成陣列
+      document.querySelector('.suggestions').innerHTML = result.map(el => {
+        // 將資料上色，取代原字詞，加上有 class 的元素
+        const span = `<span class="hl">${value}</span>`
+        const city = el.city.replace(reg, span)
+        const state = el.state.replace(reg, span)
+
+        return `<li>
+          <div>${city}, ${state} </div>
+          </li>`
+      }).join('') // join 可以把陣列轉換成字串
+      console.log(result)
+    }
+  });
+
+</script>
+</body>
+</html>
