@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Key Detection</title>
+  <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
+</head>
+<body>
+  <div></div>
+<script>
+// 新增一個空陣列置放輸入的值、密碼
+const key = []
+const keyCode = []
+const password = 'james'
+const passwordCode = '74,65,77,69,83'
+
+// 如果輸入 james，會執行cornify.js
+window.addEventListener('keyup',(e)=> {
+  console.log(e.key) // 也可以抓 keyCode
+  console.log(e.keyCode)
+  key.push(e.key)
+  keyCode.push(e.keyCode)
+
+  // 設定密碼長度，如果超過長度(5)移除陣列第一筆元素(shift)
+  if( key.length > 5 ) {
+    key.shift()
+    keyCode.shift()
+  } 
+  // 限制密碼的方法二
+  //key.splice(-密碼長度-1 (負數可從數组结尾處规定位置), 輸入密碼長度 - 密碼長度(要刪的字數))
+  //key.splice(-password.length - 1, key.length - password.length);
+
+// 陣列轉成字串方法
+// key.toString()
+// key.join()
+
+  // 把陣列轉成字串，比對密碼
+  // 方法一與方法二 includes 或 ===
+  //if (key.join('').includes(password)) {
+  //if ( key.join('') === password ) {
+  if ( passwordCode === keyCode.join()) {
+    cornify_add()
+    // console.log('James is 87')
+    // 陳振豪圖片
+    // const img = document.createElement('img')
+    // img.src = '/James.jpg'
+    // img.width = 400
+    // document.body.append(img)
+    // 方法二
+    // document.querySelector('div').innerHTML += '<img src="/James.jpg" width="300">'
+  }
+})
+</script>
+</body>
+</html>
+
+

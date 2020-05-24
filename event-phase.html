@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<body>
+    <ul>
+        <li>
+            <a href="#">Link 1</a>
+        </li>
+        <li>
+            <a href="#">Link 2</a>
+        </li>
+        <li>
+            <a href="#">Link 3</a>
+        </li>
+    </ul>
+
+<script>
+    document.querySelector('ul').addEventListener('click', (e) => {
+        if (e.target.nodeName != 'A') return
+
+        alert(e.target.parentNode.innerText)
+    }, false)
+    // document.querySelector('a').addEventListener('click', (e) => {
+    //     console.log('點到 a(true)')
+    //     console.log(e.target)
+    //     console.log(e.eventPhase)
+    //     e.preventDefault() // 停止瀏覽器預設動作
+    // } ,true) // true 由上往下
+    // document.querySelector('li').addEventListener('click', (e) => {
+    //     console.log('點到 li(true)')
+    //     console.log(e.target)
+    //     console.log(e.eventPhase)
+    // } ,true)
+    // document.querySelector('ul').addEventListener('click', (e) => {
+    //     console.log('點到 ul(true)')
+    //     console.log(e.target)
+    //     console.log(e.eventPhase)
+    // } ,true)
+
+
+    // document.querySelector('a').addEventListener('click', (e) => {
+    //     console.log('點到 a(false)')
+    //     console.log(e.target)
+    //     console.log(e.eventPhase)
+    //     e.stopPropagation() // 停止事件監聽
+    // } ,false) // false 由下往上
+    // document.querySelector('li').addEventListener('click', (e) => {
+    //     console.log('點到 li(false)')
+    //     console.log(e.target)
+    //     console.log(e.eventPhase)
+    // } ,false) // false 由下往上
+    // document.querySelector('ul').addEventListener('click', (e) => {
+    //     console.log('點到 ul(false)')
+    //     console.log(e.target)
+    //     console.log(e.eventPhase)
+    // } ,false) // false 由下往上
+
+// PhaseType
+// const unsigned short      CAPTURING_PHASE                = 1;
+// const unsigned short      AT_TARGET                      = 2;
+// const unsigned short      BUBBLING_PHASE                 = 3;
+</script>
+</body>
+</html>
